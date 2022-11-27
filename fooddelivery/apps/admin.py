@@ -4,6 +4,7 @@ from apps.models import(
      MenuCategory,
      MenuItem,
      Cart,
+     Order,
 )
 
 
@@ -25,6 +26,12 @@ admin.site.register(MenuItem,MenuItemadmin)
 class Cartadmin(admin.ModelAdmin):
     list_display = ('user', 'id', 'menu_items', 'quantity','price','is_active','cart_status','created_on','updated_on')
 admin.site.register(Cart,Cartadmin) 
+
+
+class Orderadmin(admin.ModelAdmin):
+    list_display = ('id','user','total','status', 'created_on','updated_on')
+admin.site.register(Order,Orderadmin) 
+
 
 
 

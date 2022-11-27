@@ -45,7 +45,7 @@ class MenuItem(TimeStampedModel):
     is_veg = models.BooleanField(default = True)
 
     def __str__(self):
-        return '{} {}'.format(self.category, self.restaurant)
+        return '{} {} {} {}'.format(self.category,self.name, self.restaurant,self.price)
 
 
 class Cart(TimeStampedModel):
@@ -55,17 +55,21 @@ class Cart(TimeStampedModel):
     price = models.FloatField(default=0)
     cart_status = models.IntegerField(default = 2,choices = ORDER_STATUS_CHOICES) 
     is_active = models.BooleanField(default = True)
+    subtotal = models.IntegerField(default = 0)
     
     def __str__(self):
-        return '{} {}'.format(self.menu_items,self.user)
+        return '{} '.format(self.menu_items)
 
 
 class Order(TimeStampedModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     cart = models.ManyToManyField(Cart)
-    order_status = models.IntegerField(default = 1,choices = ORDER_STATUS_CHOICES) 
     tax =  models.FloatField(default = 0.1)
-    status = models.BooleanField(default = False)
+    total = models.IntegerField(default = 0)
+    phone_number = models.CharField(max_length = 10)
+    address = models.CharField(max_length=50)
+    order_status = models.IntegerField(default = 1,choices = ORDER_STATUS_CHOICES) 
+    status = models.BooleanField(default = True)
 
         
 

@@ -11,8 +11,9 @@ router = DefaultRouter()
 router.register(r'user', views.UserViewSet)
 router.register(r'hotel',views.RestaurantView)
 router.register(r'category',views.MenuCategoryView)
-router.register(r'item',views.MenuItemView)
+router.register(r'food',views.MenuItemView)
 router.register(r'cart',views.CartView)
+router.register(r'order',views.OrderView)
 
 
 urlpatterns = [

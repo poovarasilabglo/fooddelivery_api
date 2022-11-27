@@ -6,6 +6,7 @@ from apps.models import(
     MenuCategory,
     MenuItem,
     Cart,
+    Order,
 )
 from apps.serializers import(
     LoginSerializer,
@@ -15,14 +16,20 @@ from apps.serializers import(
     MenuCategorySerializer,
     MenuItemSerializer,
     CartSerializer,
+    OrderSerializer,
 )
 from rest_framework import views,viewsets
 from django.contrib.auth import login
 from django.contrib.auth import authenticate
+from apps.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
+from django.db.models import Sum
+from django.db.models import Q,F
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 class LoginView(views.APIView):
@@ -74,6 +81,8 @@ class MenuItemView(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     permission_classes = (AllowAny,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category_id','name']
 
 
 class CartView(viewsets.ModelViewSet):
@@ -83,9 +92,23 @@ class CartView(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user= self.request.user, price= serializer.validated_data['menu_items'].price) 
-    
 
 
+class OrderView(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        #cart_obj = self.request.data['cart']
+        cart_obj =Cart.objects.filter(Q(user = self.request.user) & Q(is_active = True))
+        print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',cart_obj)
+        total = cart_obj.aggregate(total = Sum(F('price') * F('quantity')))['total']
+        print('tttttttttttttttttttttttttttt',total)
+        cart_obj.update(is_active = False)
+        serializer.save(user= self.request.user,total=total)
+
+   
 
 
 
