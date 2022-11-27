@@ -8,6 +8,7 @@ from apps.models import(
     MenuCategory,
     MenuItem,
     Cart,
+    Order,
 )
 
 
@@ -86,6 +87,16 @@ class MenuItemSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
+    subtotal = serializers.SerializerMethodField(method_name="total")
     class Meta:
         model = Cart
-        fields = ['user', 'id', 'menu_items', 'quantity','is_active','created_on','updated_on']
+        fields = ['user', 'id', 'menu_items', 'quantity','price','subtotal','is_active','created_on','updated_on']
+
+    def total(self,cartitem:Cart):
+        return cartitem.quantity * cartitem.price
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+     class Meta:
+        model = Order
+        fields = ['id','user','total','phone_number','address','cart','status']
