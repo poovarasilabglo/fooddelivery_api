@@ -9,7 +9,7 @@ from apps.models import(
 
 
 class Restaurantadmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'address')
+    list_display = ('name', 'address')
 admin.site.register(Restaurant,Restaurantadmin) 
 
 
