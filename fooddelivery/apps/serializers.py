@@ -9,6 +9,7 @@ from apps.models import(
     MenuItem,
     Cart,
     Order,
+    Payment,
 )
 
 
@@ -97,6 +98,21 @@ class CartSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-     class Meta:
+    class Meta:
         model = Order
-        fields = ['id','user','total','phone_number','address','cart','status']
+        fields = ['id','user','total','cart','phone_number','address','status']
+        extra_kwargs = {
+        'cart': {'read_only': True},
+        }
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+     user = serializers.ReadOnlyField(source='user.username')
+     class Meta:
+        model = Payment
+        fields = ['user','order','transaction_id','paid_status','amount','email']
+
+
+
+
+ 

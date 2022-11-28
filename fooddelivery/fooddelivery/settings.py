@@ -15,7 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+import environ
+env = environ.Env()
+environ.Env.read_env() 
+ALLOWED_HOSTS = ['*']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -24,8 +27,6 @@ SECRET_KEY = 'django-insecure-5%w+k6uvapby0lzinq7&mr0gq7ilkaw!fukx1uf5wz7sj@-8qd
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,8 +81,12 @@ WSGI_APPLICATION = 'fooddelivery.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':env('DATABASE_NAME'),
+        'USER':env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS'),
+        'HOST': 'localhost',
+        'PORT': '3306', 
     }
 }
 
@@ -128,14 +133,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-      "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-        
-    ),
-      'DEFAULT_AUTHENTICATION_CLASSES': [
+     'DEFAULT_AUTHENTICATION_CLASSES': [
            'rest_framework.authentication.TokenAuthentication',
            'rest_framework.authentication.BasicAuthentication',
            'rest_framework.authentication.SessionAuthentication',
        ],
 }
 
+STRIPE_PUBLISHABLE_KEY = "pk_test_51M0fgRSAmylrNNcmIK8cNLLRNVuyzTm496tK2sE8t8Yowh7m0jlq0moEM6EGYqeSzPbSgAhFaSZU8nwrtyd2IivN00sgZAy9c7"
+STRIPE_SECRET_KEY =env("STRIPE_SECRET_KEY")
