@@ -7,8 +7,18 @@ from apps.models import(
      Order,
 )
 
+class InLineCart(admin.TabularInline):
+    model = Cart
+    extra = 1
+    max_num =3
+
+
+class InLineMenuCategory(admin.StackedInline):
+    model = MenuCategory
+
 
 class Restaurantadmin(admin.ModelAdmin):
+    inlines = [InLineMenuCategory]
     list_display = ('name', 'address')
 admin.site.register(Restaurant,Restaurantadmin) 
 
@@ -19,7 +29,12 @@ admin.site.register(MenuCategory,MenuCategoryadmin)
 
 
 class MenuItemadmin(admin.ModelAdmin):
+    inlines = [InLineCart]
     list_display = ('id','category','restaurant','name','price','image','restaurant','is_available','is_veg','created_on')
+    list_editable = ('price',)
+    search_fields = ('id','name')
+    list_filter = ('name','price')
+    list_display_links = ('id','name')
 admin.site.register(MenuItem,MenuItemadmin) 
 
 
@@ -30,7 +45,10 @@ admin.site.register(Cart,Cartadmin)
 
 class Orderadmin(admin.ModelAdmin):
     list_display = ('id','user','total','status', 'created_on','updated_on')
-admin.site.register(Order,Orderadmin) 
+admin.site.register(Order,Orderadmin)
+
+
+
 
 
 
