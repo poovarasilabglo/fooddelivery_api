@@ -18,6 +18,7 @@ from django.urls import include,path
 from rest_framework.authtoken import views
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')), 
     path('admin/', admin.site.urls),
     path('', include('apps.urls')),
     path('api-auth/', include('rest_framework.urls')),

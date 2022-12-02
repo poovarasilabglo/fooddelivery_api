@@ -92,8 +92,3 @@ class Payment(TimeStampedModel):
   
 
 
-
-        
-
-
-

@@ -9,16 +9,16 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+#import os
+import environ
+env = environ.Env()
+environ.Env.read_env() 
+ALLOWED_HOSTS = ['*']
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import environ
-env = environ.Env()
-environ.Env.read_env() 
-ALLOWED_HOSTS = ['*']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -32,6 +32,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,6 +128,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+#PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+#STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+#STATIC_URL = '/static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -141,4 +147,6 @@ REST_FRAMEWORK = {
 }
 
 STRIPE_PUBLISHABLE_KEY = "pk_test_51M0fgRSAmylrNNcmIK8cNLLRNVuyzTm496tK2sE8t8Yowh7m0jlq0moEM6EGYqeSzPbSgAhFaSZU8nwrtyd2IivN00sgZAy9c7"
-STRIPE_SECRET_KEY =env("STRIPE_SECRET_KEY")
+STRIPE_SECRET_KEY = "sk_test_51M0fgRSAmylrNNcmjMwqYYffTw41dTm5Q6ZhlcqBNUK45H883dusmuz0cfObwNRoDXzeY2jkFsFKuGVfsq9eEIuy0062PGB84t"
+
+GRAPPELLI_ADMIN_TITLE = "Arasi"
