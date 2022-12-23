@@ -24,7 +24,7 @@ admin.site.register(Restaurant,Restaurantadmin)
 
 
 class MenuCategoryadmin(admin.ModelAdmin):
-    list_display = ('id', 'name','created_on',)
+    list_display = ('id', 'name','restaurant','created_on',)
 admin.site.register(MenuCategory,MenuCategoryadmin) 
 
 
@@ -39,7 +39,13 @@ admin.site.register(MenuItem,MenuItemadmin)
 
 
 class Cartadmin(admin.ModelAdmin):
-    list_display = ('user', 'id', 'menu_items', 'quantity','price','is_active','cart_status','created_on','updated_on')
+    list_display = ('user', 'id', 'menu_items', 'quantity','price','subtotal','is_active','cart_status','created_on','updated_on')
+    fieldsets =[
+        ('userdetails',{'fields':['user']}),
+        ('foods',{'fields':['menu_items','quantity','price']}),
+        ('cartdetail',{'fields':['is_active','cart_status']})
+    ] 
+    #sortable_field_name = "quantity"     
 admin.site.register(Cart,Cartadmin) 
 
 

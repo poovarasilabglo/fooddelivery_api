@@ -21,7 +21,7 @@ class LoginSerializer(serializers.Serializer):
         user = self.authenticate(**data)
         if user and user.is_active:
             return user
-        raise serializers.ValidationError("Incorrect Credentials")
+        raise serializers.ValidationError(self.error_messages['invalid_credentials'])
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -31,12 +31,14 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
     write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    #is_restaurant = serializers.BooleanField(default=False)
+    #is_user = serializers.BooleanField(default=True)
     token = serializers.SerializerMethodField('get_user_token')
 
     class Meta:
         model = User
         fields = ('username', 'password', 'password2',
-         'email', 'first_name', 'last_name', 'token')
+         'email', 'first_name', 'last_name','token')
         extra_kwargs = {
         'first_name': {'required': True},
         'last_name': {'required': True}
@@ -75,6 +77,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 class MenuCategorySerializer(serializers.ModelSerializer):
+    #restaurant = serializers.ReadOnlyField(source='restaurant.name')
     class Meta:
         model = MenuCategory
         fields = ['id', 'name','restaurant','created_on']

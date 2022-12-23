@@ -43,8 +43,20 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps',
     'django_filters',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    
     
 ]
+SITE_ID = 1
+
+
+#AUTH_USER_MODEL = 'apps.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -149,4 +162,40 @@ REST_FRAMEWORK = {
 STRIPE_PUBLISHABLE_KEY = "pk_test_51M0fgRSAmylrNNcmIK8cNLLRNVuyzTm496tK2sE8t8Yowh7m0jlq0moEM6EGYqeSzPbSgAhFaSZU8nwrtyd2IivN00sgZAy9c7"
 STRIPE_SECRET_KEY = "sk_test_51M0fgRSAmylrNNcmjMwqYYffTw41dTm5Q6ZhlcqBNUK45H883dusmuz0cfObwNRoDXzeY2jkFsFKuGVfsq9eEIuy0062PGB84t"
 
-GRAPPELLI_ADMIN_TITLE = "Arasi"
+GRAPPELLI_ADMIN_TITLE = "Food Delivery App"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '1889697541379590',
+            'secret': '14e24b8feb64ab39fe5a01c49fed4bd7',
+            'key': ''
+        }
+    }
+}
+
+#600253207230-s685jg4mkm13v0mg35av15entm3167q1.apps.googleusercontent.com
+#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
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '600253207230-s685jg4mkm13v0mg35av15entm3167q1.apps.googleusercontent.com',
+            'secret': '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',
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+    }
+}
