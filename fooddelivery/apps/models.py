@@ -1,7 +1,6 @@
 from django.db import models
-#from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
-
 
 
 SUCCESS = 1
@@ -28,7 +27,6 @@ class TimeStampedModel(models.Model):
      is_user = models.BooleanField(default=False)'''
 
   
-
 class Restaurant(models.Model):
     name = models.CharField(max_length=50)
     address = models.TextField()
@@ -40,6 +38,7 @@ class Restaurant(models.Model):
 class MenuCategory(TimeStampedModel):
     name = models.CharField(max_length=100)
     restaurant = models.ForeignKey(Restaurant, related_name="categories", on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return self.name

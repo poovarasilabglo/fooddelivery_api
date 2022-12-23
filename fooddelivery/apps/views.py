@@ -38,8 +38,6 @@ from django.conf import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-
-
 class LoginView(views.APIView):
     serializer_class = LoginSerializer
 
@@ -79,11 +77,6 @@ class MenuCategoryView(viewsets.ModelViewSet):
     serializer_class = MenuCategorySerializer
     permission_classes = (AllowAny,)
 
-    def perform_create(self, serializer):
-        hotel = self.request.data['restaurant']
-        hotel = Restaurant.objects.get(id=hotel)
-        serializer.save(restaurant= hotel)
-
 
 class MenuItemView(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
@@ -99,7 +92,8 @@ class CartView(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def perform_create(self, serializer):
-        serializer.save(user= self.request.user, price= serializer.validated_data['menu_items'].price) 
+        serializer.save(user= self.request.user, 
+                        price= serializer.validated_data['menu_items'].price) 
 
 
 class OrderView(viewsets.ModelViewSet):
@@ -109,9 +103,7 @@ class OrderView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         cart_obj =Cart.objects.filter(Q(user = self.request.user) & Q(is_active = True))
-        print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',cart_obj)
         total = cart_obj.aggregate(total = Sum(F('price') * F('quantity')))['total']
-        print('tttttttttttttttttttttttttttt',total)
         serializer.save(user= self.request.user,total=total,cart =cart_obj)
         cart_obj.update(is_active = False)
 
@@ -184,10 +176,6 @@ class PaymentView(viewsets.ModelViewSet):
 
 
 
-
-
-
-   
 
 
 
